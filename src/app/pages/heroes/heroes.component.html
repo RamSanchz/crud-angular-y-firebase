@@ -9,7 +9,10 @@
   </div>
 </div>
 
-<table class="table mt-3 animate_animated animate_fadeIn">
+<table
+  *ngIf="!cargando && heroes.length > 0"
+  class="table mt-3 animate_animated animate_fadeIn"
+>
   <thead class="table-dark">
     <tr>
       <th>#</th>
@@ -20,18 +23,31 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
+    <tr *ngFor="let heroe of heroes; let i = index">
+      <th>{{ i + 1 }}</th>
+      <th>{{ heroe.nombre }}</th>
+      <th>{{ heroe.poder }}</th>
+      <th>
+        <label *ngIf="heroe.vivo" class="badge bg-success">Vivo</label>
+        <label *ngIf="!heroe.vivo" class="badge bg-danger">Muerto</label>
+      </th>
+      <th>
+        <button class="btn btn-info me-1" [routerLink]="['/heroe', heroe.id]">
+          <i class="fa fa-pen"></i>
+        </button>
+        <button (click)="deleteHeroe(heroe, i)" class="btn btn-danger">
+          <i class="fa fa-trash"></i>
+        </button>
+      </th>
     </tr>
   </tbody>
 </table>
 
 <!-- Alerta sin registros -->
-<div class="alert alert-warning text-center mt-3">
+<div
+  *ngIf="!cargando && heroes.length === 0"
+  class="alert alert-warning text-center mt-3 animate__animated animate__fadeIn animate__faste"
+>
   <h4 class="alert-heading">No hay registros</h4>
   <p>
     <i class="fa fa-exclamation fa-2x"></i>
@@ -39,7 +55,10 @@
 </div>
 
 <!-- alerta cargando -->
-<div class="alert alert-info text-center mt-3">
+<div
+  *ngIf="cargando"
+  class="alert alert-info text-center mt-3 animate__animated animate__fadeIn animate__faster"
+>
   <h4 class="alert-heading">Cargando</h4>
   <p>
     <i class="fa fa-sync-alt fa-spin fa-2x"></i>
